@@ -1,42 +1,41 @@
-<<!DOCTYPE html>
-    <html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 
-    <head>
-        <meta charset="UTF-8">
-        <title>Trivia</title>
-        <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    </head>
+<head>
+    <title>Food Trivia</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Monoton" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Karla" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+   
+</head>
 
-    <body>
-        <div class="container">
-            <div class="jumbotron jumbotron-fluid">
-                <div class="container">
-                    <h1 class="display-3">Fluid jumbotron</h1>
-                    <h3 id="countDownTimer"></h3>
-                    <h6 id="correct"></h6>
-                    <h6 id="incorrect"></h6>
-                </div>
-            </div>
-            <div class="timer"></div>
-		<div class="question"></div>
-		<div class="answers">
-			<div>
-				<button class="answerchoice" id="buttonA"><h4>A</h4></button>
-			</div>
-			<div>
-				<button class="answerchoice" id="buttonB"><h4>B</h4></button>
-			</div>
-			<div>
-				<button class="answerchoice" id="buttonC"><h4>C</h4></button>
-			</div>
-			<div>
-				<button class="answerchoice" id="buttonD"><h4>D</h4></button>
-			</div>
-		</div>
+<body>
+    <div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-3">Can You Rock This Trivia</h1>
+    
+  </div>
+</div>
 
-        <script src="assets/javascript/script.js"></script>
-    </body>
+    
+    <div class="container">
+        
+        <div class="wrapper">
+            <div id="timeleft"></div>
+            <div id="questionblock"></div>
+            <div id="answerblock"></div>
+            <button class="btn btn-success" id="start">Start Game</button>
+            <br>
+            <button class="btn btn-success" id="reset">Play Again?</button>
+        </div>
+    </div>
+     <script type="text/javascript" src="assets/javascript/script.js"></script>
+</body>
 
-    </html>
+</html>

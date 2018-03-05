@@ -1,162 +1,174 @@
-$(document).ready(function() {
-	var index = 0;
-	var countdownTimer = {
-		time : 30,
-		reset: function() {
-			this.time = 30;
-			$('.timer').html('<h3>' + this.time + ' seconds remaining</h3>');
-		},
-		start: function() {
-			counter = setInterval(countdownTimer.count, 1000);	
-		},
-		stop: function() {
-			clearInterval(counter);
-		},
-		count: function() {
-				countdownTimer.time--;
-				console.log(countdownTimer.time);
-//				$('.timer').html(countdownTimer.time);
-			if (countdownTimer.time >= 0) {
-				$('.timer').html('<h3>' + countdownTimer.time + ' seconds remaining</h3>');
-			}
-			else {
-				index++;
-				answerWrong();
-				countdownTimer.reset();
-				if (index < questionArray.length) {
-					loadQuestion(index);
-				} else {
-					$(".answerchoice").hide();
-					showScore();
-				}
-			}
-		}
-	};
-
-var correct = 0;
-var wrong = 0;
-var triviaData = [
-		{
+// Decalring variable array for question options
+var options = [
+{
 
 			question:"Whos was the lead singer of the band Queen?",
-			choices:["Donald Trump", "Pink", "lil Wayne", "Freddie Mercury"],
-			answer: "Freddie Mercury"
+			choice:["Donald Trump", "Pink", "lil Wayne", "Freddie Mercury"],
+			answer: 3
 		},
 
 		{
 			question:"What was the highest selling album of the 1980's?",
-			choices:["Take my time", "Thriller -Michael Jackson", "Turn back", "Point of Entry"],
-			answer: "Thriller -Michael Jackson"
+			choice:["Take my time", "Thriller -Michael Jackson", "Turn back", "Point of Entry"],
+			answer: 1
 
 		},
 
 		{
-			question1:"In 2012, Psy got the record for most YouTube views ever, passing what artist who previusly held the record?",
-			choices:["Justin Bieber", "Madonna", "Eminem", "Selena Gomez"],
-			answer: "Justin Bieber"
+			question:"In 2012, Psy got the record for most YouTube views ever, passing what artist who previusly held the record?",
+			choice:["Justin Bieber", "Madonna", "Eminem", "Selena Gomez"],
+			answer: 0
 		},
 
 		{
 			question:"Whos is the most successfil UK solo artist in the US?",
-			choices:["Gordon ramsy", "Adele", "Elton John", "Ed Sheeran"],
-			answer: "Elton John"
+			choice:["Gordon ramsy", "Adele", "Elton John", "Ed Sheeran"],
+			answer: 2
 		},
 
 		{
 			question:"What was Jimi Hendrix's real name?",
-			choices:["James Marshall Hendrix", "Robinson Garcia", "Jeemay drix", "JimJim Hendo"],
-			answer: "James Marshall Hendrix"
-		}
-		];
+			choice:["James Marshall Hendrix", "Robinson Garcia", "Jeemay drix", "JimJim Hendo"],
+			answer: 0
+		}];
 
-// var questionArray = [q1, q2, q3, q4, q5, q6, q7, q8, q9, q10];
+var correctCount = 0;
+var wrongCount = 0;
+var unanswerCount = 0;
+var timer = 20;
+var intervalId;
+var userGuess ="";
+var running = false;
+var qCount = options.length;
+var pick;
+var index;
+var newArray = [];
+var holder = [];
 
-function loadQuestion(questionSelection) {
-	console.log(questionSelection);
-	countdownTimer.reset();
-  $(".question").html("<h3>" + triviaData[questionSelection].question + "</h3>");
-  $("#buttonA").text(triviaData[questionSelection].choices[0]).show();
-  $("#buttonB").text(triviaData[questionSelection].choices[1]).show();
-  $("#buttonC").text(triviaData[questionSelection].choices[2]).show();
-  $("#buttonD").text(triviaData[questionSelection].choices[3]).show();
-//  getAnswer();  
-//  nextQuestion(index);
+
+$(document).ready(function () {
+$("#reset").hide();
+//click start button to start game
+$("#start").on("click", function () {
+		$("#start").hide();
+		displayQuestion();
+		runTimer();
+		for(var i = 0; i < options.length; i++) {
+	holder.push(options[i]);
 }
-
-//function nextQuestion() {
-//	index = index++;
-//	console.log(index);
-//}
-
-function setup() {
-	index = 0;
-	$('.question').append('<button id="startButton">Start</button>');
-	$('#startButton').on('click', function() {
-		$(this).hide();
-		countdownTimer.start();
-	 	loadQuestion(index);
-	});
-}		
-
-function getAnswer() {
-
-//  nextQuestion();
-	$('.answerchoice').on('click', function() {
-	  console.log('alert', index);
-		index++;
-		console.log('click', index);
-		$(".question").text('');
-		$("#buttonA").text('');
-		$("#buttonB").text('');
-		$("#buttonC").text('');
-		$("#buttonD").text('');
-		loadQuestion();
 	})
+//timer start
+function runTimer(){
+	if (!running) {
+	intervalId = setInterval(decrement, 1000); 
+	running = true;
+	}
+}
+//timer countdown
+function decrement() {
+	$("#timeleft").html("<h3>Time remaining: " + timer + "</h3>");
+	timer --;
+
+	//stop timer if reach 0
+	if (timer === 0) {
+		unanswerCount++;
+		stop();
+		$("#answerblock").html("<p>Time is up! The correct answer is: " + pick.choice[pick.answer] + "</p>");
+		showResult();
+	}	
 }
 
-function answerCorrect() {
-	correct++;
-	alert("Correct!");
-	console.log("correct");
+//timer stop
+function stop() {
+	running = false;
+	clearInterval(intervalId);
+}
+//randomly pick question in array if not already shown
+//display question and loop though and display possible answers
+function displayQuestion() {
+	//generate random index in array
+	index = Math.floor(Math.random()*options.length);
+	pick = options[index];
+
+
+		$("#questionblock").html("<h2>" + pick.question + "</h2>");
+		for(var i = 0; i < pick.choice.length; i++) {
+			var userChoice = $("<div>");
+			userChoice.addClass("answerchoice");
+			userChoice.html(pick.choice[i]);
+			//assign array position to it so can check answer
+			userChoice.attr("data-guessvalue", i);
+			$("#answerblock").append(userChoice);
+//		}
 }
 
-function answerWrong() {
-	wrong++;
-	alert("Incorrect!");
-	console.log("wrong");
+
+
+//click function to select answer and outcomes
+$(".answerchoice").on("click", function () {
+	//grab array position from userGuess
+	userGuess = parseInt($(this).attr("data-guessvalue"));
+
+	//correct guess or wrong guess outcomes
+	if (userGuess === pick.answer) {
+		stop();
+		correctCount++;
+		userGuess="";
+		$("#answerblock").html("<p>Correct!</p>");
+		showResult();
+
+	} else {
+		stop();
+		wrongCount++;
+		userGuess="";
+		$("#answerblock").html("<p>Wrong! The correct answer is: " + pick.choice[pick.answer] + "</p>");
+		showResult();
+	}
+})
 }
 
-function showScore() {
-	$('.question').empty();
-	$('.question').append("<h2><p>" + correct + " correct</p></h2>");
-	$('.question').append("<h2><p>" + wrong + " incorrect</p></h2>");
-	countdownTimer.stop();
-	$('.timer').empty();
+
+function showResult () {
+	
+	newArray.push(pick);
+	options.splice(index,1);
+
+	var hidpic = setTimeout(function() {
+		$("#answerblock").empty();
+		timer= 20;
+
+	//run the score screen if all questions answered
+	if ((wrongCount + correctCount + unanswerCount) === qCount) {
+		$("#questionblock").empty();
+		$("#questionblock").html("<h3>Game Over!  Here's how you did: </h3>");
+		$("#answerblock").append("<h4> Correct: " + correctCount + "</h4>" );
+		$("#answerblock").append("<h4> Incorrect: " + wrongCount + "</h4>" );
+		$("#answerblock").append("<h4> Unanswered: " + unanswerCount + "</h4>" );
+		$("#reset").show();
+		correctCount = 0;
+		wrongCount = 0;
+		unanswerCount = 0;
+
+	} else {
+		runTimer();
+		displayQuestion();
+
+	}
+	}, 3000);
+
 
 }
 
-setup();
-$('.answerchoice').on('click', function() {
- console.log($(this));
- if(answerchoice === triviaData[questionSelection].answer){
- 	console.log("correct")
- } else{
- 	console.log("wrong")
- }
- $(".question").text('');
- $("#buttonA").text('');
- $("#buttonB").text('');
- $("#buttonC").text('');
- $("#buttonD").text('');
- index++;
- if (index < questionArray.length) {
- 	loadQuestion(index);
- } else {
- 	$(".answerchoice").hide();
- 	showScore();
- }
-});
+$("#reset").on("click", function() {
+	$("#reset").hide();
+	$("#answerblock").empty();
+	$("#questionblock").empty();
+	for(var i = 0; i < holder.length; i++) {
+		options.push(holder[i]);
+	}
+	runTimer();
+	displayQuestion();
 
+})
 
-//	$('#start').click(countdownTimer.start);
-});
+})
