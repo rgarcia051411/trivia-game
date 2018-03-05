@@ -1,24 +1,12 @@
-function counter(){
-        gitCounter = setInterval(decrement,1000);
-    };
-    var number = 5;
-    function decrement()
-    {
-        console.log("number",number);
-        number--;
-        $("#timer").text("remaining time:" + number);
-        //if once number hits zero
-        if (number === 0)
-        {
-            clearInterval(gitCounter);
-            console.log("outoftime");
-        };    
-    }
+// var questionArea = $('#trivia-area');
+var counterStart = 30;
 
 
 
 
 
+// Trivia Question
+// ==============================
 
 var triviaData = [
 		{
@@ -55,16 +43,35 @@ var triviaData = [
 		];
 
 
-			var correct = 0;
-    		var incorrect = 0;
-    		var answerQuestion = 0;
-   
-    
+// Declare game variable
+// var game = {
+// 	question: questions,
+// 	currentQuesion: 0,
+// 	counter: counterStart,
+// 	correct: 0;
+// 	incorrect:
+// }
 
 
 
+// Functions
+// ===========================
 
+function game(){
+	var questions = triviaData;
+	var currentQuesion = 0;
+	correct = 0;
+	incorrect = 0;
+	countdown();
 
+}
+
+function countDownTimer(){
+	counterStart--;
+	$('#countDownTimer').html(counter)
+	console.log(counter);
+}
+countDownTimer();
 
 
 
